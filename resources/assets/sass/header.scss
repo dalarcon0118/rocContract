@@ -1,0 +1,44 @@
+
+.el-header.header{
+  height: 80px;
+}
+.header{
+
+  -webkit-box-shadow: 0 0 1.875rem 0 rgba(0, 0, 0, 0.1);
+  -ms-box-shadow: 0 0 1.875rem 0 rgba(0, 0, 0, 0.1);
+  -o-box-shadow: 0 0 1.875rem 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 1.875rem 0 rgba(0, 0, 0, 0.1);
+  color: #000000;
+  .search-cell{
+    padding-top: 15px;
+  }
+  .logo-cell{
+    padding: 10px;
+  }
+  li{
+
+  }
+  ul{
+    /*height: 80px;*/
+  }
+  .header-logo{
+    width: 4.75rem;
+    max-height: 3.125rem;
+    max-width: 100%;
+  }
+  .user-cell {
+    padding-top: 15px;
+  }
+  .user-profile{
+    width: 48px;
+    height: 48px;
+  }
+  .el-button.is-circle{
+    padding: 0;
+    margin-top: -13px;
+    border-color: white;
+  }
+  .user-name{
+    margin: 2px 0;
+  }
+}
