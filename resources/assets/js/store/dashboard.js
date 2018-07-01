@@ -346,13 +346,22 @@ export default new Vuex.Store({
             st.state.newContract.contractNbr =  st.state.newContract.contractNbr+1;
             st.state.activeTab = ++ st.state.indexTab+'';
             let empty_contract = Object.assign({},this.state.newContract)
-            st.state.tabs.push({title:title,name:st.state.activeTab,type:'contract',newContract:empty_contract})
+            st.state.tabs.push({
+                title:title,
+                name:st.state.activeTab,
+                type:'contract',
+                newContract:empty_contract})
         },
         openContract(st){
             st.state.newContract.contractNbr =  st.state.newContract.contractNbr;
             var title = "Contrato nro " + st.state.newContract.contractNbr;
-
-            st.state.tabs.push({title:title,name:st.state.newContract.contractNbr})
+            let editContract = Object.assign({},this.state.newContract);
+            st.state.tabs.push({
+                title:title,
+                name:st.state.newContract.contractNbr,
+                type:'contract',
+                newContract:editContract
+            })
         }
     }
 });

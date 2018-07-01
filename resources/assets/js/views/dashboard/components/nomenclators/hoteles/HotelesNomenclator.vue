@@ -81,7 +81,7 @@
           <el-col :span="22">
             <el-table
                     class="table"
-                    :data="agency.items"
+                    :data="hotel.items"
                     highlight-current-row
                     ref="contractList"
                     @current-change="handleCurrentRow"
@@ -180,7 +180,7 @@
             this.$store.dispatch('save',['hotel',this.model])
         },
         createNew(){
-          this.model = this.newHotel ;
+            this.model = this.newHotel;
         }
       }
 

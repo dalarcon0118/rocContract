@@ -62,7 +62,7 @@ class AllFachadeController extends Controller
       $params = $request->get("params");
       switch ($entity){
           case 'hotel':
-              return Hotel::createorupdate;
+              return Hotel::updateOrCreate();
               break;
           case 'coin':
               return Currency::all()->toJson();
