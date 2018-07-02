@@ -93,24 +93,8 @@
             id:0,
             name:"",
             updatedAt:"",
-            value:""
-          },
-          category:[{
-            label:"1",
-            value:"1"
-          },{
-            label:"2",
-            value:"2"
-          },{
-            label:"3",
-            value:"3"
-          },{
-            label:"4",
-            value:"4"
-          },{
-            label:"5",
-            value:"5"
-          }],
+            value:"",
+          }
         }
       },
       computed:{
@@ -123,10 +107,10 @@
       },
         methods:{
           create(){
-
+              this.model = this.empty;
           },
           save(){
-
+              this.$store.dispatch('save',['coin',this.model]);
           },
           handleCurrentRow(row){
               this.model =Object.assign({},row.item)

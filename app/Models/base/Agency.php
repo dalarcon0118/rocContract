@@ -42,6 +42,8 @@ class Agency extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
+
+    public $timestamps = false;
     public function nomenclador()
     {
         return $this->belongsTo('App\Nomenclador', 'payment_method_id');

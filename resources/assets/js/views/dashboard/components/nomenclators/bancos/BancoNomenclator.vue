@@ -69,8 +69,8 @@
             <el-row style="margin-top: 20px;">
                 <el-col>
                   <el-form-item class="button-container">
-                      <el-button @click="newBank" type="primary">Nuevo</el-button>
-                      <el-button @click="save"  >Guardar</el-button>
+                      <el-button @click="createNew" type="primary">Nuevo</el-button>
+                      <el-button @click="save">Guardar</el-button>
                   </el-form-item>
                 </el-col>
             </el-row>
@@ -140,20 +140,20 @@
       },
       created() {
         //do something after creating vue instance
-        this.newBank = Object.assign({},this.model)
-        this.$store.dispatch('get',['bank'])
+        this.newBank = Object.assign({},this.model);
+        this.$store.dispatch('get',['bank']);
       },
         methods:{
-          newBank(){
-
-          },
-          save(){
-
-          },
-          handleCurrentRow(row){
-            this.model = Object.assign(this.model,row.item);
-            console.log(this.model)
-          },
+            createNew(){
+                this.model = this.newBank;
+            },
+            save(){
+                this.$store.dispatch('save',['bank',this.model]);
+            },
+            handleCurrentRow(row){
+                this.model = Object.assign(this.model,row.item);
+                console.log(this.model)
+            },
         }
 
     })

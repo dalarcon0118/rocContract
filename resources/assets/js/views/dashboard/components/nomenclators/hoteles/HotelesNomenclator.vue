@@ -29,7 +29,7 @@
                      <FormItem
                          label="Banco"
                          type="select"
-                         name="bank"
+                         name="bank_id"
                          :options="bank.items"
                         :model="model"
                       />
@@ -130,10 +130,10 @@
       data:function(){
         return {
           model:{
-            id:"",
+            id:0,
             name:"",
             telephone:"",
-            bank:"",
+            bank_id:"",
             email:"",
             code:"",
             address:"",
@@ -173,14 +173,15 @@
         handleCurrentRow(row){
           this.model = Object.assign(this.model,row.item);
           let actualSelect = _.filter(this.bank.items,{defaultValue:row.item.bank_id});
-          this.model.bank = actualSelect[0].value;
-            // this.$store.dispatch('selectedrow',['contractList',row]);
+          this.selectedRow = row;
+          this.model.bank_id = actualSelect[0].value;
         },
         save(){
-            this.$store.dispatch('save',['hotel',this.model])
+            this.model.bank_id = this.model.bank_id.split('*-*')[0]
+            this.$store.dispatch('save',['hotel',this.model]);
         },
         createNew(){
-            this.model = this.newHotel;
+            this.model = Object.assign({},this.newHotel)
         }
       }
 

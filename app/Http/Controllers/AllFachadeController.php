@@ -18,6 +18,7 @@ use App\Models\base\Contract_specialcondition;
 use App\Models\base\Bank;
 use App\Models\base\Agency;
 use App\Models\base\Season;
+use App\Models\base\SpecialCondition;
 
 class AllFachadeController extends Controller
 {
@@ -56,38 +57,89 @@ class AllFachadeController extends Controller
             case 'season':
                 return Season::all()->toJson();
                 break;
+            case 'specialConditionsCategory':
+                return Nomenclator::where('type','condition_category')->get();
+                break;
+            case 'specialConditions':
+                return SpecialCondition::with(['nomenclador'])->get();;
+                break;
         }
     }
+    public function remove_all(Request $request,$entity){
+        $params = $request->get("params");
+        switch ($entity){
+            case 'hotel':
+                /* print_r($params);die;*/
+                $hotel =  Hotel::firstOrNew($params);
+                $hotel->delete();
+                return ['success'=>true];
+                break;
+            case 'bank':
+                $bank =  Bank::firstOrNew($params);
+                $bank->delete();
+                return ['success'=>true];
+                break;
+            case 'agency':
+                $agency = Agency::firstOrNew($params);
+                $agency->delete();
+                return ['success'=>true];
+                break;
+            case 'coin':
+                $currency =  Currency::firstOrNew($params);
+                $currency->delete();
+                return ['success'=>true];
+                break;
+            case 'market':
+                $item =  Market::firstOrNew($params);
+                $item->delete();
+                return ['success'=>true];
+                break;
+            case 'generalcondition':
+                $item =  GeneralConditions::firstOrNew($params);
+                $item->delete();
+                return ['success'=>true];
+                break;
+        }
+    }
+
     public function save_all(Request $request,$entity){
       $params = $request->get("params");
       switch ($entity){
           case 'hotel':
-              return Hotel::updateOrCreate();
-              break;
-          case 'coin':
-              return Currency::all()->toJson();
+             /* print_r($params);die;*/
+              $hotel =  Hotel::firstOrNew($params);
+              $hotel->save();
+              return ['success'=>true];
               break;
           case 'bank':
-              return Bank::all()->toJson();break;
-          case 'market':
-              return  Market::all()->toJson();
-              break;
-          case 'hotelRoom':
-              $criteria = $request->get("q");
-              return HotelRoom::with(['nomenclador'])->where($criteria[0],$criteria[1])->get();
-              break;
-          case 'supplement':
-              return Nomenclator::where('type','supp_type')->get();
-              break;
-          case 'discount':
-              return Nomenclator::where('type','person_type')->get();
-              break;
-          case 'generalcondition':
-              return GeneralConditions::with(['agency'])->get();
+              $bank =  Bank::firstOrNew($params);
+              $bank->save();
+              return ['success'=>true,'data'=>$bank];
               break;
           case 'agency':
-                  return Agencias::with(['agency'])->get();
-                  break;
+              $agency = Agency::firstOrNew($params);
+              $agency->save();
+              return ['success'=>true,'data'=>$agency];
+              break;
+          case 'coin':
+              $currency =  Currency::firstOrNew($params);
+              $currency->save();
+
+              /*return Currency::all()->toJson();*/
+              break;
+
+          case 'market':
+              $item =  Market::firstOrNew($params);
+              $item->save();
+              return ['success'=>true,'data'=>$item];
+              break;
+          case 'generalcondition':
+              $item =  GeneralConditions::updateOrCreate(['id'=>$params['id']],$params);
+              /*print_r($item);*/
+              $item->save();
+              return ['success'=>true,'data'=>$item];
+              break;
+
 
       }
     }
@@ -114,7 +166,8 @@ class AllFachadeController extends Controller
     public function fromContract($id,$entity){
         switch ($entity){
             case 'price':
-                return Price::with(['hotelroom'=>function($query){
+                return Price::with(
+                    ['hotelroom'=>function($query){
                     $query->with(['nomenclador']);
                 },
                     'nomenclador',

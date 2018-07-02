@@ -47,6 +47,8 @@ class GeneralConditions extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
+
+    public $timestamps = false;
     public function contractBygeneralConditions()
     {
         return $this->hasMany('App\ContractBygeneralCondition', 'general_conditions_id');

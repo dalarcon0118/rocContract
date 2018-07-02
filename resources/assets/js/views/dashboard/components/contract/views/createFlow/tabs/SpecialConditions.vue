@@ -1,25 +1,18 @@
 <template>
 <div class="price">
-    <!--<el-form ref="form" :model="form" label-position="top" label-width="120px">
+    <el-form ref="form" :model="form" label-position="top" label-width="120px">
         <el-row :gutter="20" class="center-section">
             <el-col :span="11">
                 <fieldset class="scheduler-border">
                     <el-col :span="11">
-                        <el-form-item label="Suplemento:">
-                            <el-select v-model="newContract.mandatorySupplem.idSuplement" placeholder="Suplemento Obligatorio">
-                                <el-option
-                                        v-for="item in supplement.items"
-                                        :key="item.value"
-                                        :label="item.label"
-                                        :value="item.value">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="11">
-                        <el-form-item label="Valor:">
-                            <el-input v-model="newContract.mandatorySupplem.value"></el-input>
-                        </el-form-item>
+                        <FormItem
+                                label="Condiciones especiales:"
+                                type="select"
+                                name="specialCondition"
+                                :options="specialConditions.items"
+                                :model="model"
+                        />
+
                     </el-col>
                 </fieldset>
                 <el-form-item class="button-container">
@@ -27,34 +20,9 @@
                     <el-button @click="clean" >Limpiar</el-button>
                 </el-form-item>
             </el-col>
-            <el-col :span="11">
-                <fieldset class="scheduler-border">
-                    <legend class="scheduler-border"></legend>
-                    <el-row :gutter="20">
-                        <el-col :span="11">
-                            <el-form-item label="Tipo de persona:">
-                                <el-select v-model="newContract.mandatorySupplem.personKind" placeholder="Seleccione el tipo de persona">
-                                    <el-option
-                                            v-for="item in discount.items"
-                                            :key="'d'+item.value"
-                                            :label="item.label"
-                                            :value="item.value">
-                                    </el-option>
-                                </el-select>
-                            </el-form-item>
-                        </el-col>
-                        <el-col :span="11">
-                            <el-form-item label="%Reducción">
-                                <el-input v-model="newContract.mandatorySupplem.valueType"></el-input>
-                            </el-form-item>
-                        </el-col>
-                    </el-row>
-
-                </fieldset>
-            </el-col>
         </el-row>
 
-    </el-form>-->
+    </el-form>
     <el-row :gutter="20" class="center-section">
         <el-col :span="22">
             <el-card class="box-card">
@@ -91,6 +59,8 @@
     import Vue from 'vue';
     import {mapState} from 'vuex';
     import {formarStrValue,formatDate} from '../../../../../util/';
+    import FormItem from '../../../../../../../ui/base/formItem';
+    import FieldSet from '../../../../../../../ui/base/FieldSet';
     export default Vue.component('SpecialConditions',{
       props:{
           newContract:{}
@@ -100,17 +70,16 @@
         },
         data(){
             return {
-                form:{},
+               model:{
+                   specialCondition:{}
+               }
 
             }
         },
+        computed:{
+            ...mapState(['specialConditions'])
+        },
         methods:{
-            active() {
-                if (this.hotel.value) {
-                    this.$store.dispatch('get', ['hotelRoom', ['hotel_id', this.hotel.value]]);
-
-                }
-            },
             handleSelectionChange(){
 
             },
@@ -134,9 +103,9 @@
             this.newContract.mandatorySupplem = this.clean;
         },
         created(){
-            this.clean = Object.assign({},this.newContract.mandatorySupplem);
-            this.$store.dispatch('get',['supplement']);
-            this.$store.dispatch('get',['discount']);
+            this.$store.dispatch('get',['specialConditions']);
+            /*this.clean = Object.assign({},this.newContract.mandatorySupplem);
+            this.$store.dispatch('get',['discount']);*/
 
         }
     })

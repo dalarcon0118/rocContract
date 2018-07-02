@@ -31,6 +31,8 @@ class Currency extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
+    public $timestamps = false;
+
     public function contracts()
     {
         return $this->hasMany('App\Contract');

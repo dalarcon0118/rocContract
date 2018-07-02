@@ -27,6 +27,11 @@ export const apiCreateContract = function(data){
 export const getfromContract = function($entity,id){
     return Axios.post('fromContract/'+id.contractID+"/"+$entity);
 }
+
+export const remove =(entity,params)=>{
+    return Axios.post("remove_all/"+entity,{params:params});
+}
+
 export const setModel = function(server,me){
     //let model = me.state.newContract;
 

@@ -6,17 +6,17 @@
                     <FormItem
                        label="Denominación:"
                        type="text"
-                       name="name"
+                       name="name_es"
                        :model="model"
                      />
 
                 </el-col>
                 <el-col :span="11">
                   <FormItem
-                     label="Agencias"
+                     label="Condición:"
                      type="select"
-                     name="category"
-                     :options="category"
+                     name="condition_category_id"
+                     :options="specialConditionsCategory.items"
                      :model="model"
                   />
                 </el-col>
@@ -26,8 +26,8 @@
             <el-row style="margin-top: 20px;">
                 <el-col>
                   <el-form-item class="button-container">
-                      <el-button @click="add" type="primary">Agregar</el-button>
-                      <el-button @click="clean"  >Limpiar</el-button>
+                      <el-button @click="createNew" type="primary">Nuevo</el-button>
+                      <el-button @click="save"  >Guardar</el-button>
                   </el-form-item>
                 </el-col>
             </el-row>
@@ -36,21 +36,21 @@
           <el-col :span="22">
             <el-table
                     class="table"
-                    :data="hotels"
+                    :data="specialConditions.items"
                     highlight-current-row
                     ref="contractList"
+                    @current-change="handleCurrentRow"
                     height="250">
                 <el-table-column
                         fixed
-                        prop="nombre"
+                        prop="item.name_es"
                         label="Denominación"
                       />
                 <el-table-column
-                        prop="address"
-                        label="Categoría"
-                        width="250"/>
-
-
+                        fixed
+                        prop="item.nomenclador.name_es"
+                        label="Denominación"
+                />
             </el-table>
           </el-col>
         </el-row>
@@ -60,34 +60,38 @@
     import Vue from 'vue';
     import FormItem from '../../../../../ui/base/formItem';
     import FieldSet from '../../../../../ui/base/FieldSet';
+    import {mapState} from 'vuex';
     export default Vue.component('SpecialsConditions', {
       data:function(){
         return {
           hotels:"",
           model:{
-            direction:"xczxc",
+            name_es:"",
+            id:"",
+            condition_category_id:"",
           },
-          category:[{
-            label:"1",
-            value:"1"
-          },{
-            label:"2",
-            value:"2"
-          },{
-            label:"3",
-            value:"3"
-          },{
-            label:"4",
-            value:"4"
-          },{
-            label:"5",
-            value:"5"
-          }],
         }
       },
+        computed:{
+            ...mapState(['specialConditionsCategory','specialConditions'])
+        },
+        created(){
+          this.emty = Object.assign({},this.model);
+            this.$store.dispatch('get',['specialConditionsCategory']);
+            this.$store.dispatch('get',['specialConditions']);
+
+        },
         methods:{
             handleCurrentRow(row){
-                this.model.pointer(row)
+                this.model = Object.assign(this.model,row.item);
+                let actualSelect = _.filter(this.specialConditionsCategory.items,{defaultValue:row.item.condition_category_id});
+                this.model.condition_category_id = actualSelect[0].value;
+            },
+            createNew(){
+
+            },
+            save(){
+
             }
         }
 

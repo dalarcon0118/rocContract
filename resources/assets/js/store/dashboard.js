@@ -3,7 +3,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 Vue.use(Vuex);
 import  {formarStrValue,formatValuetoStr,formatDate} from '../views/dashboard/util';
-import {getContract,getAgency,get,save,totalCount,apiCreateContract,getfromContract,generateModel} from '../api/home';
+import {getContract,getAgency,remove,get,save,totalCount,apiCreateContract,getfromContract,generateModel} from '../api/home';
 export default new Vuex.Store({
     state:{
         activeTab:"1",
@@ -68,6 +68,12 @@ export default new Vuex.Store({
             value:"",
             items:[]
         },
+        specialConditionsCategory:{
+            items:[]
+        },
+        specialConditions:{
+            items:[]
+        },
         newContract:{
             contractNbr:0,
             ref:"",
@@ -129,7 +135,11 @@ export default new Vuex.Store({
           store.state.activeTab = ++ store.state.indexTab+'';
           switch (action) {
             case 'hotel':
-               store.state.tabs.push({title:'Hotel',name:store.state.activeTab,type:action})
+               store.state.tabs.push({
+                   title:'Hotel',
+                   name:store.state.activeTab,
+                   type:action
+               });
               break;
               case 'bank':
                  store.state.tabs.push({title:'Bancos',name:store.state.activeTab,type:action})
@@ -150,7 +160,11 @@ export default new Vuex.Store({
                  store.state.tabs.push({title:'Condiciones Especiales',name:store.state.activeTab,type:action})
               break;
               case 'generalConditions':
-                 store.state.tabs.push({title:'Condiciones Generales',name:store.state.activeTab,type:action})
+                 store.state.tabs.push({
+                     title:'Condiciones Generales',
+                     name:store.state.activeTab,
+                     type:action
+                 });
               break;
             default:
 
@@ -255,7 +269,6 @@ export default new Vuex.Store({
             contract.coin = formarStrValue(contract.coin,0);
             apiCreateContract(contract).
                 then((resp)=>{
-                console.log(resp)
             })
 
         },
@@ -274,13 +287,27 @@ export default new Vuex.Store({
         },
         save(store,arg_arr){
           let entity = arg_arr[0];
-          let query = arg_arr[1]?arg_arr[1] : [];
+          let params = arg_arr[1]?arg_arr[1] : [];
+          let callBack =arg_arr[2]?arg_arr[2] : (function(){});
+          let context  = arg_arr[3]?arg_arr[3] : null;
           let state = store.state;
-          save(entity,query).
+          save(entity,params).
           then((resp)=>{
-              var result_ = resp.data;
+              callBack(store,resp,context)
 
           })
+        },
+        remove(store,arg_arr){
+            let entity = arg_arr[0];
+            let params = arg_arr[1]?arg_arr[1] : [];
+            let callBack =arg_arr[2]?arg_arr[2] : (function(){});
+            let context  = arg_arr[3]?arg_arr[3] : null;
+            let state = store.state;
+            remove(entity,params).
+            then((resp)=>{
+                callBack(store,resp,context)
+
+            })
         },
         get(store,arg_arr){
             var me  = this;

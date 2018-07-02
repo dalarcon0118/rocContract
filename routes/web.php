@@ -17,6 +17,7 @@ Route::get('/', function () {
 Route::post('contract/get-all','ContractController@getAll');
 Route::post('all/{entity}','AllFachadeController@all');
 Route::post('save_all/{entity}','AllFachadeController@save_all');
+Route::post('remove_all/{entity}','AllFachadeController@remove_all');
 
 Route::post('agency/get-all','AgencyController@getAll');
 Route::get('price/get-all','PriceController@getAll');

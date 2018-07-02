@@ -34,6 +34,8 @@ class Hotel extends Model
      */
     protected $fillable = ['bank_id', 'name', 'category', 'address', 'telephone', 'fax', 'email', 'code'];
 
+    public $timestamps = false;
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

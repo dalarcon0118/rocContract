@@ -86,8 +86,18 @@
       }
     }
 }
-
-
+}
+.el-button.buton-remove{
+  background-color: #bf5329;
+  color: white;
+}
+.el-button.buton-remove:hover{
+  background-color: #bf5329;
+  color: white;
+}
+.el-button.buton-remove:focus{
+  background-color: #bf5329;
+  color: white;
 }
 fieldset.scheduler-border {
   border: 1px solid #e4e7ed;

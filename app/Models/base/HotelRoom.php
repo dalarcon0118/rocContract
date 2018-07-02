@@ -26,6 +26,7 @@ class HotelRoom extends Model
      */
     protected $fillable = ['hotel_id', 'room_id'];
 
+    public $timestamps = false;
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

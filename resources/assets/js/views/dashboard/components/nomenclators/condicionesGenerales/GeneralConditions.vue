@@ -17,7 +17,7 @@
                     <FormItem
                        label="Agencias"
                        type="select"
-                       name="agency"
+                       name="id_agencia"
                        :options="agency.items"
                        :model="model"
                     />
@@ -39,8 +39,14 @@
             <el-row style="margin-top: 20px;">
                 <el-col>
                   <el-form-item class="button-container">
-                      <el-button @click="add" type="primary">Nuevo</el-button>
-                      <el-button @click="clean"  >Guardar</el-button>
+                      <el-button class="buton-remove"
+                              @click="remove">Eliminar</el-button>
+                      <el-button
+                              @click="createNew"
+                              type="primary">Nuevo</el-button>
+
+                      <el-button
+                              @click="save">Guardar</el-button>
                   </el-form-item>
                 </el-col>
             </el-row>
@@ -63,7 +69,7 @@
                 <el-table-column
                         prop="agency"
                         label="Agencia"
-                        width="100"/>
+                />
 
                 <!--<el-table-column
                         prop="item.content_es"
@@ -83,9 +89,10 @@
       data:function(){
         return {
           model:{
-            agency:"",
+              id:"",
+              id_agencia:"",
               content_es:"",
-            name:""
+              name:""
           }
         }
       },
@@ -95,16 +102,44 @@
       created() {
         //do something after creating vue instance
         this.$store.dispatch('get',['agency']);
-        this.$store.dispatch('get',['generalcondition'])
+        this.$store.dispatch('get',['generalcondition']);
+        this.empty = Object.assign({},this.model);
       },
         methods:{
             handleCurrentRow(row){
-                this.model = Object.assign(this.model,row);
-                this.model.content_es = row.item.content_es;
-                let actualSelect = _.filter(this.generalcondition.items,{agencyValue:row.agencyValue});
-                this.model.agency = actualSelect[0].agencyValue;
+                if(row){
+                    this.model.name  = row.item.name;
+                    this.empty = Object.assign({},this.model);
+                    this.model.content_es = row.item.content_es;
+                    this.model.id = row.item.id;
+                    let actualSelect = _.filter(this.generalcondition.items,{agencyValue:row.agencyValue});
+                    this.model.id_agencia = actualSelect[0].agencyValue;
+                    this.$refs.editor.setContent(this.model.content_es);
+                }
+
+            },
+            createNew(){
+               this.model =  Object.assign({},this.empty);
                 this.$refs.editor.setContent(this.model.content_es);
-                console.log(this.model);
+            },
+            remove(){
+                let save = Object.assign({},this.model);
+                save.id_agencia = this.model.id_agencia.split('*-*')[0];
+                save.content_en = save.content_es;
+                this.$store.dispatch('remove',['generalcondition',save,this.reloadConditions,this]);
+            },
+            save(){
+                this.model.content_es = this.$refs.editor.getContent();
+                let save = Object.assign({},this.model);
+                save.id_agencia = this.model.id_agencia.split('*-*')[0];
+                save.content_en = save.content_es;
+                this.$store.dispatch('save',['generalcondition',save,this.reloadConditions,this]);
+            },
+            reloadConditions(store,resp,self){
+                store.state.generalcondition.items = [];
+                this.$store.dispatch('get',['generalcondition']);
+                self.model = Object.assign({},self.empty);
+                self.$refs.editor.setContent(self.model.content_es);
             }
         }
 

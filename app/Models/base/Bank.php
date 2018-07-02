@@ -29,6 +29,7 @@ class Bank extends Model
      */
     protected $fillable = ['name', 'address', 'iban_nr', 'code', 'swift', 'beneficiary', 'reference'];
 
+    public $timestamps = false;
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */

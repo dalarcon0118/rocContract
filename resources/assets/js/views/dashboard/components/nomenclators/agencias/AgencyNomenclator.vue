@@ -91,7 +91,7 @@
             <el-row style="margin-top: 20px;">
                 <el-col>
                   <el-form-item class="button-container">
-                      <el-button @click="add" type="primary">Nuevo</el-button>
+                      <el-button @click="createNew" type="primary">Nuevo</el-button>
                       <el-button @click="save"  >Guardar</el-button>
                   </el-form-item>
                 </el-col>
@@ -166,7 +166,8 @@
             currency:"",
             country:"",
             city:"",
-            zip_code:""
+            zip_code:"",
+              locale:"es"
           }
         }
       },
@@ -174,17 +175,19 @@
         ...mapState(['payment','agency'])
       },
       created() {
-        //do something after creating vue instance
+        this.newAgency = Object.assign({},this.model);
         this.$store.dispatch('get',['payment']);
         this.$store.dispatch('get',['agency']);
       },
       methods:{
-        add(){
-          console.log(this);
-        },
-        save(){
-
-        },
+          createNew(){
+              this.model = this.newAgency;
+          },
+          save(){
+              let save = Object.assign({},this.model)
+              save.payment_method_id = this.model.payment_method_id.split('*-*')[0];
+              this.$store.dispatch('save',['agency',save]);
+          },
         handleCurrentRow(row){
             this.model = Object.assign(this.model,row.item);
             let actualSelect = _.filter(this.payment.items,{defaultValue:row.item.payment_method_id});
